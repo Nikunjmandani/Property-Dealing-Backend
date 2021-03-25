@@ -1,9 +1,11 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using PropertyWebAPI.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+
 
 namespace PropertyWebAPI.Controllers
 {
@@ -11,16 +13,19 @@ namespace PropertyWebAPI.Controllers
     [ApiController]
     public class CityController : ControllerBase
     {
-        [HttpGet]
-        public IEnumerable<string> Get()
+        private readonly DataContext dc;
+        
+        public CityController(DataContext dc)
         {
-            return new string[] { "atlanta", "new york", "dayton" };
+            this.dc = dc;
+        }
+        
+        [HttpGet]
+        public IActionResult GetCities()
+        {
+            var cities = dc.Cities.ToList();
+            return Ok(cities);
         }
 
-        [HttpGet("{id}")]
-        public string Get(int id)
-        {
-            return "atlanta";
-        }
     }
 }
